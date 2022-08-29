@@ -1,0 +1,58 @@
+<!-- MAIN CONTENT-->
+<div class="main-content">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
+            <div class="row">
+                
+                <!-- Loop over a collection of employees -->
+                <div *ngFor="let tempEmployee of employees" class="col-md-3">
+
+                    <div class="card-box">
+                        <a routerLink="/employees/{{ tempEmployee.id }}">
+                            <img src="{{tempEmployee.imageURL}}" class="img-responsive">
+                        </a>
+                        <a routerLink="/employees/{{ tempEmployee.id }}">
+                            <h1>{{tempEmployee.firstName}} {{tempEmployee.lastName}}</h1>
+                        </a>
+                        <div class="position">{{tempEmployee.positionName}}</div>
+                            <h2>Grade: {{tempEmployee.grade}}</h2>
+                        <a href="#" class="primary-btn">Bring to team</a>
+                    </div>
+                </div>
+
+                <!-- show empty page -->
+                <div *ngIf="employees?.length == 0" class="alert alert-warning col-md-12" role="alert">
+                    No employees found.
+                </div>
+
+            </div>
+
+            <div class="footer-pagination">
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-3">
+                        <div class="items">
+                            <label>Item per page</label> <select>
+                                <option>10</option>
+                                <option>20</option>
+                                <option>30</option>
+                                <option>40</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="number">1 - 10 of 100</div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="arrows">
+                            <a href="#"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                            <a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- END MAIN CONTENT-->

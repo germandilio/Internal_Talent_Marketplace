@@ -47,10 +47,13 @@ public class Employee {
     @Column(name = "sex")
     private String sex;
 
+    @Column(name = "grade")
+    private String grade;
+
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, long phoneNumber, String email, Position position, String cvLink, String imageURL, Date dateHired, boolean active, String sex) {
+    public Employee(String firstName, String lastName, long phoneNumber, String email, Position position, String cvLink, String imageURL, Date dateHired, boolean active, String sex, String grade) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
@@ -60,6 +63,8 @@ public class Employee {
         this.imageURL = imageURL;
         this.dateHired = dateHired;
         this.active = active;
+        this.sex = sex;
+        this.grade = grade;
     }
 
     public String getImageURL() {
@@ -67,5 +72,10 @@ public class Employee {
             return "/assets/images/placeholder_" + sex + ".jpeg";
         }
         return imageURL;
+    }
+
+    public String getPositionName() {
+        if (position == null) return "";
+        return position.getDescription();
     }
 }

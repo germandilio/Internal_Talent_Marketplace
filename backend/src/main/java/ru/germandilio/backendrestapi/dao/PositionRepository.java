@@ -5,7 +5,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import ru.germandilio.backendrestapi.entity.Position;
 
-@RepositoryRestResource(collectionResourceRel = "position", path = "position")
+@RepositoryRestResource(collectionResourceRel = "positions", path = "positions")
 public interface PositionRepository extends JpaRepository<Position, Long> {
 }
 

@@ -1,0 +1,25 @@
+<div class="detail-section">
+    <div class="container-fluid">
+        
+        <img src="{{employee?.imageURL}}" class="detail-img">
+
+        <h3>{{employee?.firstName}} {{employee?.lastName}}</h3>
+        <div class="position">{{employee?.positionName}}</div>
+        <h5>Grade: {{employee?.grade}}</h5>
+
+        <a href="#" class="primary-btn">Bring to team</a>
+
+        <br><br>
+        <h4>Service information</h4>
+        <h5>Sex: {{employee?.sex}}</h5>
+        <h5>Hired: {{employee?.dateHired | date}}</h5>
+
+        <br>
+        <h4>Contact information</h4>
+        <h5>Email: {{employee?.email}}</h5>
+        <h5>phone: +{{employee?.phoneNumber }}</h5>
+
+        <a routerLink="/employees" class="mt-5">Back to employees</a>
+
+    </div>
+</div>

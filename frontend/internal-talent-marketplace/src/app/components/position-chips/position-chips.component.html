@@ -1,0 +1,27 @@
+<mat-form-field class="mat-chip-list-stacked" appearance="fill">
+    <mat-label>select position</mat-label>
+    <mat-chip-list #positionList aria-label="Position selection">
+      <mat-chip
+        *ngFor="let position of positions"
+        (removed)="remove(position)">
+        {{position}}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      <input
+        placeholder="Type or select..."
+        #positionInput
+        [formControl]="positionCtrl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="positionList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="add($event)">
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let position of filteredPositions | async" [value]="position">
+        {{position}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  
