@@ -1,6 +1,6 @@
 # Internal Talent Marketplace
 
-Project using [Okta](https://www.okta.com/) security
+Project use [Okta](https://www.okta.com/) security
 
 ### Fronend configurations
  - [environment](./frontend/internal-talent-marketplace/src/environments/environment.ts)
