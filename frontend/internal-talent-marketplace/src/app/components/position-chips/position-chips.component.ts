@@ -6,6 +6,8 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import { Router } from '@angular/router';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import { Position } from 'src/app/common/position';
+import { PositionsService } from 'src/app/services/positions.service';
 
 @Component({
   selector: 'app-position-chips',
@@ -16,25 +18,56 @@ export class PositionChipsComponent {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   positionCtrl = new FormControl('');
 
-  filteredPositions: Observable<number[]>;
+  filteredPositions: Observable<string[]>;
 
-  positions: number[] = [];
-  allPositions: number[] = [1, 2, 3, 4, 5];
+  positions: string[] = [];
+  allPositions: string[] = [];
+
+  mapNameToPosition: Map<string, Position> = new Map<string, Position>();
 
   @ViewChild('positionInput') positionInput: ElementRef<HTMLInputElement> | undefined;
 
-  constructor(private route: Router) {
+  constructor(private route: Router, private positionsService: PositionsService) {
+    this.positionsService.getPositions().subscribe(data => {
+      // create map
+      for (const item of data) {
+        this.mapNameToPosition.set(item.description || '', item);
+      }
+
+      // fill labels to display
+      for (const item of data) {
+        this.allPositions.push(item.description || '');
+      }
+    });
+
     this.filteredPositions = this.positionCtrl.valueChanges.pipe(
       startWith(null),
       map((fruit: string | null) => (fruit ? this._filter(fruit) : this.allPositions.slice())),
     );
   }
 
+  getIds(): number[] {
+    let ids: number[] = [];
+    for (const label of this.positions) {
+      var position = this.mapNameToPosition.get(label);
+      if (position == null || position.id == null) continue;
+
+      ids.push(position.id);
+    }
+    return ids;
+  } 
+
   update() {
-    this.route.navigateByUrl(`/position/${this.positions.join(',')}`);
+    var ids = this.getIds();
+    this.positionsService.setIds(ids);
+
+    this.route.navigateByUrl(`/position/${ids.join(',')}`);
   }
 
   dropFilter() {
+    var ids = this.getIds();
+    this.positionsService.setIds(ids);
+    
     this.route.navigateByUrl(`/position`);
   }
 
@@ -43,7 +76,7 @@ export class PositionChipsComponent {
 
     // Add our position
     if (value) {
-      this.positions.push(parseInt(value));
+      this.positions.push(value);
     }
 
     // Clear the input value
@@ -53,7 +86,7 @@ export class PositionChipsComponent {
     this.update();
   }
 
-  remove(position: number): void {
+  remove(position: string): void {
     const index = this.positions.indexOf(position);
 
     if (index >= 0) {
@@ -68,7 +101,7 @@ export class PositionChipsComponent {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.positions.push(parseInt(event.option.viewValue));
+    this.positions.push(event.option.viewValue);
     if (this.positionInput != null) {
       this.positionInput.nativeElement.value = '';
     }
@@ -76,9 +109,7 @@ export class PositionChipsComponent {
     this.positionCtrl.setValue(null);
   }
 
-  private _filter(value: string): number[] {
-    const filterValue = parseInt(value);
-
-    return this.allPositions.filter(position => position == filterValue);
+  private _filter(value: string): string[] {
+    return this.allPositions.filter(position => position == value);
   }
 }

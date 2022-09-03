@@ -1,0 +1,40 @@
+<div class="detail-section">
+    <div class="container-fluid">
+
+<table class="table table-bordered">
+    <tr>
+        <th width="20%">Image</th>
+        <th width="50%">Description</th>
+        <th width="30%">Contact Info</th>
+    </tr>
+
+    <tr *ngFor="let tempEmployee of getEmployees()">
+        <td>
+            <img src="{{tempEmployee.imageURL}}" class="img-responsive" width="150px">
+        </td>
+
+        <td>
+            <p>{{tempEmployee.firstName}} {{tempEmployee.lastName}}</p>
+            <p>{{tempEmployee.positionName}} ({{tempEmployee.grade}})</p>
+            <p>{{tempEmployee.cvLink}}</p>
+        </td>
+
+        <td>
+            <p>phone: <a href="tel:+{{tempEmployee.phoneNumber}}">+{{tempEmployee.phoneNumber}}</a></p>
+            <p>email: <a href="mailto:{{tempEmployee.email}}">{{tempEmployee.email}}</a></p>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="1"></td>
+        <td style="font-weight: bold">
+            <div class="position">
+                <h5 *ngFor="let posTuple of getTotalEmployeesCountByPosition().entries()">
+                    {{posTuple[0]}}: {{posTuple[1]}}
+                </h5>
+            </div>
+        </td>
+    </tr>
+</table>
+</div>
+</div>

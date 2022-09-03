@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  itmBaseUrl: 'https://localhost:4200',
+  itmApiBaseUrl: 'https://localhost:8443',
+  itmApiBasePath: 'https://localhost:8443/internal-talent-marketplace/api',
+  positionApiPostfix: '/positions',
+  employeesApiPostfix: '/employees'
 };
 
 /*

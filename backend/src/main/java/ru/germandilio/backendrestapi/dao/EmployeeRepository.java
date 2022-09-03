@@ -19,4 +19,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query(value = "SELECT * FROM internal_talent_marketplace.public.employees AS employee WHERE CONCAT(replace(employee.first_name, ' ', ''), replace(employee.last_name, ' ', '')) ILIKE CONCAT('%', replace(:value, ' ', '%'), '%')",
             nativeQuery = true)
     Page<Employee> findByFIOContaining(@RequestParam("search") String value, Pageable pageable);
+
+    @Query(value = "SELECT * FROM internal_talent_marketplace.public.employees AS employee WHERE employee.position_id IN :id AND CONCAT(replace(employee.first_name, ' ', ''), replace(employee.last_name, ' ', '')) ILIKE CONCAT('%', replace(:value, ' ', '%'), '%')",
+            nativeQuery = true)
+    Page<Employee> findByPositionIdInAndFIOContaining(@RequestParam("search") String value, @RequestParam("id") Collection<Long> id, Pageable pageable);
 }
