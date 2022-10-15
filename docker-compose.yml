@@ -1,0 +1,48 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:15.0-alpine
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/1-init.sql
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: postgresql
+      POSTGRES_PASSWORD: postgresql
+      POSTGRES_DB: internal_talent_marketplace
+
+  backend:
+    image: itm/backend
+    build: 
+      context: backend/
+      dockerfile: ./Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8443:8443"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/internal_talent_marketplace
+      - SPRING_DATASOURCE_USERNAME=postgresql
+      - SPRING_DATASOURCE_PASSWORD=postgresql
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8443/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    image: itm/frontend
+    build: 
+      context: frontend/internal-talent-marketplace/
+      dockerfile: ./Dockerfile
+    depends_on:
+      - db
+      - backend
+    ports:
+      - "4200:4200"
+    restart: always
+
+    
